@@ -1,13 +1,16 @@
 import zeep
 import random
+import time
 from zeep.exceptions import Error as zError
 import os
+import base64
 from zeep import xsd
 import pprint
 from lxml import etree
 import json
 
-client_identifier = str(random.randint(0, 7367))
+client_identifier = str(time.time()).split('.')[0]
+date_requested = int(str(time.time()+86400000).split('.')[0])
 pd_url = 'https://qa-tdc13.translations.com/PD/services'
 pd_shortcode = 'GEN000006'
 src_lang = 'en-US'
@@ -18,8 +21,7 @@ project_ticket = ''
 pd_username = 'testuser1010'
 pd_password = 'password1!'
 file_path = "C:\\a4"
-file_list = ["Thisisatest1.docx",
-             "Thisisatest2.docx"]
+file_list = ["Thisisatest1.docx"]
 
 
 def submit_document_with_binary_resource(file_name, token):
@@ -32,11 +34,17 @@ def submit_document_with_binary_resource(file_name, token):
     print "exited create_resource_info"
     with open(os.path.join(file_path, file_name), 'r') as source_doc:
         print "opened the file " + os.path.join(file_path, file_name)
-        file_contents = source_doc.read()
-        print "read file " + file_name
-        print file_contents
-        submit_document_response = document_service.submitDocumentWithBinaryResource(documentInfo=doc_info, resourceInfo=res_info,
-                                                                                     data=file_contents, userId=token)
+        file_contents_64 = base64.b64encode(source_doc.read(), 'utf-8')
+        print "----------- Begin document info -------------"
+        print doc_info
+        print "----------- End document info -------------"
+        print "----------- Begin resource info -------------"
+        print res_info
+        print "----------- End resource info -------------"
+        submit_document_response = document_service.submitDocumentWithBinaryResource(documentInfo=doc_info,
+                                                                                     resourceInfo=res_info,
+                                                                                     data=file_contents_64,
+                                                                                     userId=token)
         print "Document submitted " + file_name + " with ticket " + submit_document_response['ticketId']
     return submit_document_response['ticketId']
 
@@ -49,9 +57,15 @@ def create_submission_info(sub_name):
     # priority: ns1:Priority, projectTicket: xsd:string, revenue: xsd:double, submissionBackground: xsd:string,
     # submissionCustomFields: ns1:SubmissionCustomFields[], submitters: xsd:string[],
     # workflowDefinitionTicket: xsd:string)
-    prio = document_factory.Priority(value=0)
-    submission_info = document_factory.SubmissionInfo(name=sub_name, clientIdentifier=client_identifier,
+    prio = document_factory.Priority(value=1)
+    date = document_factory.Date(date=int(str(time.time()+86400000).split('.')[0]))
+    submission_info = document_factory.SubmissionInfo(additionalCosts='', autoStartChilds=False,
+                                                      clientIdentifier=client_identifier, dateRequested=date,
+                                                      internalNotes='', metadata=[], name=sub_name,
                                                       projectTicket=project_ticket, critical=False, priority=prio)
+    print "--------------- Begin submission info ---------------"
+    print submission_info
+    print "--------------- Begin submission info ---------------"
     return submission_info
 
 
@@ -65,11 +79,12 @@ def create_document_info(doc_name, doc_instructions):
         document_info = document_factory.DocumentInfo(projectTicket=project_ticket, submissionTicket=submission_ticket,
                                                       sourceLocale=src_lang, name=doc_name,
                                                       instructions=doc_instructions, clientIdentifier=client_identifier,
-                                                      targetInfos=tgt_infos)
+                                                      targetInfos=tgt_infos, dateRequested=date_requested)
     else:
         document_info = document_factory.DocumentInfo(projectTicket=project_ticket, sourceLocale=src_lang,
                                                       name=doc_name, instructions=doc_instructions,
-                                                      clientIdentifier=client_identifier, targetInfos=tgt_infos)
+                                                      clientIdentifier=client_identifier, targetInfos=tgt_infos,
+                                                      dateRequested=date_requested)
 
     return document_info
 
@@ -89,10 +104,10 @@ def create_target_info():
     # ns1:TargetInfo(dateRequested: ns1:Date, encoding: xsd:string, instructions: xsd:string, metadata: ns1:Metadata[],
     # priority: ns1:Priority, requestedDueDate: xsd:long, targetLocale: xsd:string,
     # workflowDefinitionTicket: xsd:string)
-    prio = document_factory.Priority(value=0)
+    prio = document_factory.Priority(name='Low', value=0)
     target_info_array = []
     for lang in tgt_langs:
-        target_info = document_factory.TargetInfo(targetLocale=lang, requestedDueDate=0, priority=prio, encoding='UTF8')
+        target_info = document_factory.TargetInfo(targetLocale=lang, requestedDueDate=0, priority=prio, encoding='UTF-8')
         target_info_array.append(target_info)
     return target_info_array
 
@@ -142,7 +157,7 @@ try:
 
     # Fourth, start the submission
     # startSubmission(submissionId: xsd:string, submissionInfo: ns1:SubmissionInfo, userId: xsd:string)
-    sub_info = create_submission_info('Test_Submission_Python_1')
+    sub_info = create_submission_info(sub_name='Test_Submission_Python_1')
     sub = submission_service.startSubmission(submissionId=submission_ticket, submissionInfo=sub_info, userId=token)
     print "Submission ticket returned: " + sub
 
