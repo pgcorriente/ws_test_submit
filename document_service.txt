@@ -1,0 +1,168 @@
+Prefixes:
+     ns0: http://impl.services2.service.ws.projectdirector.gs4tr.org
+     ns1: http://dto.model.projectdirector.gs4tr.org/xsd
+     ns2: http://www.w3.org/2005/05/xmlmime
+     xsd: http://www.w3.org/2001/XMLSchema
+
+Global elements:
+     ns0:cancelDocument(documentTicket: ns1:DocumentTicket, userId: xsd:string)
+     ns0:cancelDocumentResponse(return: xsd:string)
+     ns0:findByTicket(ticket: xsd:string, userId: xsd:string)
+     ns0:findByTicketResponse(return: ns1:Document)
+     ns0:search(command: ns1:DocumentSearchRequest, info: ns1:PagedListInfo, userId: xsd:string)
+     ns0:searchResponse(return: ns1:DocumentPagedList)
+     ns0:submitDocumentWithBinaryResource(documentInfo: ns1:DocumentInfo, resourceInfo: ns1:ResourceInfo, data: ns2:base64Binary, userId: xsd:string)
+     ns0:submitDocumentWithBinaryResourceResponse(return: ns1:DocumentTicket)
+     ns0:submitDocumentWithTextResource(documentInfo: ns1:DocumentInfo, resourceInfo: ns1:ResourceInfo, data: xsd:string, userId: xsd:string)
+     ns0:submitDocumentWithTextResourceResponse(return: ns1:DocumentTicket)
+
+
+Global types:
+     xsd:anyType
+     ns1:Announcement(announcementText: xsd:string, date: ns1:Date)
+     ns1:Batch(name: xsd:string, targetLanguages: xsd:string[], workflowDefinition: ns1:WorkflowDefinition)
+     ns1:BatchWorkflowInfo(batchName: xsd:string, languageWorkflowInfo: ns1:LanguageWorkflowInfo)
+     ns1:ClaimScopeEnum(name: xsd:string, value: xsd:int)
+     ns1:ContentMonitorPluginInfo(pluginId: xsd:string, pluginName: xsd:string)
+     ns1:Date(critical: xsd:boolean, date: xsd:long)
+     ns1:Document(documentGroup: ns1:DocumentGroup, documentInfo: ns1:DocumentInfo, id: xsd:string, sourceLanguage: ns1:Language, sourceWordCount: xsd:int, ticket: xsd:string)
+     ns1:DocumentGroup(classifier: xsd:string, documents: ns1:Document[], mimeType: xsd:string, submission: ns1:Submission)
+     ns1:DocumentInfo(childDocumentInfos: ns1:DocumentInfo[], clientIdentifier: xsd:string, dateRequested: ns1:Date, instructions: xsd:string, metadata: ns1:Metadata[], name: xsd:string, projectTicket: xsd:string, sourceLocale: xsd:string, submissionTicket: xsd:string, targetInfos: ns1:TargetInfo[], wordCount: xsd:int)
+     ns1:DocumentPagedList(elements: ns1:Document[], pagedListInfo: ns1:PagedListInfo, tasks: ns1:Task[], totalCount: xsd:long)
+     ns1:DocumentSearchRequest(projectTickets: xsd:string[], sourceLocaleId: xsd:string, submissionTicket: xsd:string)
+     ns1:DocumentTicket(submissionTicket: xsd:string, ticketId: xsd:string)
+     ns1:DownloadActionResult(message: xsd:string, processingFinished: xsd:boolean, repositoryItem: ns1:RepositoryItem)
+     ns1:DownloadCollateralResult(errorMessages: xsd:string[], processingFinished: xsd:boolean, repositoryItem: ns1:RepositoryItem)
+     ns1:EntityTypeEnum(name: xsd:string, value: xsd:int)
+     ns1:FileFormatProfile(configurable: xsd:boolean, isDefault: xsd:boolean, mimeType: xsd:string, pluginId: xsd:string, pluginName: xsd:string, profileName: xsd:string, targetWorkflowDefinition: ns1:WorkflowDefinition, ticket: xsd:string)
+     ns1:FileFormatProgressData(dateCompleted: ns1:Date, fileCount: xsd:long, fileFormatName: xsd:string, fileProgressData: ns1:FileProgressData, jobTicket: xsd:string, workflowDueDate: ns1:Date, workflowStatus: xsd:string)
+     ns1:FileProgressData(numberOfAvailableFiles: xsd:int, numberOfCanceledFiles: xsd:int, numberOfCompletedFiles: xsd:int, numberOfDeliveredFiles: xsd:int, numberOfFailedFiles: xsd:int, numberOfInProcessFiles: xsd:int, overallProgressPercent: xsd:int)
+     ns1:FuzzyTmStatistics(fuzzyName: xsd:string, wordCount: xsd:int)
+     ns1:ItemFolderEnum(value: xsd:int)
+     ns1:ItemStatusEnum(name: xsd:string, value: xsd:int)
+     ns1:Language(locale: xsd:string, value: xsd:string)
+     ns1:LanguageDirection(sourceLanguage: ns1:Language, targetLanguage: ns1:Language)
+     ns1:LanguageDirectionModel(dateCompleted: ns1:Date, fileCount: xsd:long, fileFormatProgressData: ns1:FileFormatProgressData[], fileProgress: ns1:FileProgressData, sourceLanguage: ns1:Language, targetLanguage: ns1:Language, workflowDueDate: ns1:Date, workflowStatus: xsd:string)
+     ns1:LanguagePhaseInfo(phaseStartDate: ns1:Date, sourceFileList: xsd:string[], tmStatistics: ns1:TmStatistics)
+     ns1:LanguageWorkflowInfo(sourceLanguage: ns1:Language, targetLanguage: ns1:Language)
+     ns1:Metadata(key: xsd:string, value: xsd:string)
+     ns1:Notification(errorMessage: xsd:string, notificationDate: ns1:Date, notificationPriority: ns1:NotificationPriority, notificationText: xsd:string)
+     ns1:NotificationPriority(notificationPriorityName: xsd:string)
+     ns1:Organization(availableTasks: xsd:integer, parentOrganization: ns1:Organization, organizationInfo: ns1:OrganizationInfo, tasks: ns1:Task[], ticket: xsd:string)
+     ns1:OrganizationInfo(name: xsd:string, ticket: xsd:string, currencyCode: xsd:string, domain: xsd:string, theme: xsd:string, enabled: xsd:boolean)
+     ns1:PagedListInfo(index: xsd:int, indexesSize: xsd:int, size: xsd:int, sortDirection: xsd:string, sortProperty: xsd:string)
+     ns1:Phase(dateEnded: ns1:Date, dueDate: ns1:Date, name: xsd:string, status: ns1:ItemStatusEnum)
+     ns1:Policy(category: xsd:string, policyId: xsd:string, policyType: ns1:RoleTypeEnum)
+     ns1:PreviewResult(message: xsd:string, repositoryItem: ns1:RepositoryItem)
+     ns1:Priority(name: xsd:string, value: xsd:int)
+     ns1:Project(announcements: ns1:Announcement[], contentMonitorPluginInfo: ns1:ContentMonitorPluginInfo, defaultTargetWorkflowDefinition: ns1:WorkflowDefinition, defaultTargetWorkflowDefinitionTicket: xsd:string, fileFormatProfiles: ns1:FileFormatProfile[], includeSubmissionNameInLocalizationKit: xsd:boolean[], metadata: ns1:Metadata[], organizationName: xsd:string, projectCustomFieldConfiguration: ns1:ProjectCustomFieldConfiguration[], projectInfo: ns1:ProjectInfo, projectLanguageDirections: ns1:ProjectLanguageDirection[], ticket: xsd:string, workflowDefinitions: ns1:WorkflowDefinition[])
+     ns1:ProjectAClient(enabled: xsd:boolean, name: xsd:string, parentOrganization: ns1:Organization, ticket: xsd:string)
+     ns1:ProjectCustomFieldConfiguration(description: xsd:string, mandatory: xsd:boolean, name: xsd:string, type: xsd:string, values: xsd:string)
+     ns1:ProjectInfo(clientIdentifier: xsd:string, defaultJobWorkflowDefinitionTicket: xsd:string, defaultSubmissionWorkflowDefinitionTicket: xsd:string, defaultTargetWorkflowDefinitionTicket: xsd:string, enabled: xsd:boolean, name: xsd:string, shortCode: xsd:string)
+     ns1:ProjectLanguage(customLocaleCode: xsd:string, localeCode: xsd:string)
+     ns1:ProjectLanguageDirection(sourceLanguage: ns1:Language, targetLanguage: ns1:Language, default: xsd:boolean, frequent: xsd:boolean)
+     ns1:RepositoryItem(data: ns2:base64Binary, resourceInfo: ns1:ResourceInfo)
+     ns1:ResourceInfo(classifier: xsd:string, clientIdentifier: xsd:string, description: xsd:string, encoding: xsd:string, md5Checksum: xsd:string, mimeType: xsd:string, name: xsd:string, path: xsd:string, resourceInfoId: xsd:long, size: xsd:long, type: ns1:ResourceType)
+     ns1:ResourceType(value: xsd:int)
+     ns1:Role(policies: ns1:Policy[], roleId: xsd:string, roleType: ns1:RoleTypeEnum, tasks: ns1:Task[], ticket: xsd:string)
+     ns1:RoleTypeEnum(value: xsd:int)
+     ns1:SimpleSubmissionSearchModel(alerts: ns1:Notification[], availableTasks: xsd:long, budgetStatus: xsd:int, claimScope: ns1:ClaimScopeEnum, customFields: xsd:string[], date: ns1:Date, dateArchived: ns1:Date, dateCompleted: ns1:Date, dateStarted: ns1:Date, dueDate: ns1:Date, fileCount: xsd:long, fileProgress: ns1:FileProgressData, gate: xsd:byte, id: xsd:string, instructions: xsd:string, officeName: xsd:string, owner: ns1:UserData[], paClientName: xsd:string, parentSubmissionName: xsd:string, parentTicket: xsd:string, pmNotes: xsd:string, priority: xsd:string, projectName: xsd:string, projectTicket: xsd:string, quote: xsd:byte, reserved: xsd:boolean, sourceLanguage: xsd:string, status: ns1:ItemStatusEnum, submissionBackground: xsd:string, submissionName: xsd:string, submitterFullName: ns1:UserData[], ticket: xsd:string, wordCount: xsd:long, workflowDueDate: ns1:Date, workflowStatus: xsd:string)
+     ns1:Submission(alerts: ns1:Notification[], availableTasks: xsd:int, batches: ns1:Batch[], dateArchived: ns1:Date, dateCompleted: ns1:Date, dateCreated: ns1:Date, dateEstimated: ns1:Date, documents: ns1:Document[], dueDate: ns1:Date, id: xsd:string, owner: xsd:string, project: ns1:Project, status: ns1:ItemStatusEnum, submissionId: xsd:long, submissionInfo: ns1:SubmissionInfo, submitterFullNames: xsd:string[], ticket: xsd:string, workflowDefinition: ns1:WorkflowDefinition)
+     ns1:SubmissionCustomFields(fieldName: xsd:string, fieldValue: xsd:string)
+     ns1:SubmissionInfo(additionalCosts: xsd:string, autoStartChilds: xsd:boolean, claimScope: ns1:ClaimScopeEnum, clientIdentifier: xsd:string, dateRequested: ns1:Date, internalNotes: xsd:string, metadata: ns1:Metadata[], name: xsd:string, officeName: xsd:string, paClientTicket: xsd:string, paJobNumber: xsd:string, priority: ns1:Priority, projectTicket: xsd:string, revenue: xsd:double, submissionBackground: xsd:string, submissionCustomFields: ns1:SubmissionCustomFields[], submitters: xsd:string[], workflowDefinitionTicket: xsd:string)
+     ns1:SubmissionPagedList(elements: ns1:Submission[], pagedListInfo: ns1:PagedListInfo, tasks: ns1:Task[], totalCount: xsd:long)
+     ns1:SubmissionSearchModelPagedList(elements: ns1:SimpleSubmissionSearchModel[], pagedListInfo: ns1:PagedListInfo, tasks: ns1:Task[], totalCount: xsd:long)
+     ns1:SubmissionSearchRequest(folder: ns1:ItemFolderEnum, projectTickets: xsd:string[], submissionDate: ns1:Date, submissionDueDate: ns1:Date, submissionName: xsd:string)
+     ns1:SubmissionWorkflowInfo(batchWorkflowInfos: ns1:BatchWorkflowInfo[], languageWorkflowInfos: ns1:LanguageWorkflowInfo[], phaseName: xsd:string, submissionId: xsd:long, submissionName: xsd:string, submissionTicket: xsd:string, targetWorkflowInfos: ns1:TargetWorkflowInfo[])
+     ns1:Target(availableTasks: xsd:long, dateCompleted: ns1:Date, dateCreated: ns1:Date, dateEstimated: ns1:Date, document: ns1:Document, downloadThresholdTimeStamp: ns1:Date, dueDate: ns1:Date, fileName: xsd:string, id: xsd:string, phases: ns1:Phase[], refPhase: ns1:Phase, sourceLanguage: ns1:Language, sourceWordCount: xsd:int, status: ns1:ItemStatusEnum, targetInfo: ns1:TargetInfo, targetLanguage: ns1:Language, targetWordCount: xsd:int, ticket: xsd:string, tmStatistics: ns1:TmStatistics, workflowDefinition: ns1:WorkflowDefinition)
+     ns1:TargetInfo(dateRequested: ns1:Date, encoding: xsd:string, instructions: xsd:string, metadata: ns1:Metadata[], priority: ns1:Priority, requestedDueDate: xsd:long, targetLocale: xsd:string, workflowDefinitionTicket: xsd:string)
+     ns1:TargetPagedList(elements: ns1:Target[], pagedListInfo: ns1:PagedListInfo, tasks: ns1:Task[], totalCount: xsd:long)
+     ns1:TargetSearchRequest(dateCreated: ns1:Date, folder: ns1:ItemFolderEnum, projectTickets: xsd:string[], sourceLocaleId: xsd:string, submissionTicket: xsd:string, targetLocaleId: xsd:string)
+     ns1:TargetWorkflowInfo(batchName: xsd:string, documentName: xsd:string, fileName: xsd:string, sourceLanguage: ns1:Language, targetLanguage: ns1:Language, targetTicket: xsd:string)
+     ns1:Task(groupName: xsd:string, selectStyle: xsd:int, taskId: xsd:int, taskName: xsd:string, weight: xsd:int)
+     ns1:TiUserInfo(languageDirections: ns1:LanguageDirection[], organizationId: xsd:long, projectRoles: xsd:string[], projectTicket: xsd:string[], systemRoles: xsd:string[], vendorId: xsd:long)
+     ns1:TmStatistics(fuzzyRepetitionsWordCount1: ns1:FuzzyTmStatistics, fuzzyRepetitionsWordCount10: ns1:FuzzyTmStatistics, fuzzyRepetitionsWordCount2: ns1:FuzzyTmStatistics, fuzzyRepetitionsWordCount3: ns1:FuzzyTmStatistics, fuzzyRepetitionsWordCount4: ns1:FuzzyTmStatistics, fuzzyRepetitionsWordCount5: ns1:FuzzyTmStatistics, fuzzyRepetitionsWordCount6: ns1:FuzzyTmStatistics, fuzzyRepetitionsWordCount7: ns1:FuzzyTmStatistics, fuzzyRepetitionsWordCount8: ns1:FuzzyTmStatistics, fuzzyRepetitionsWordCount9: ns1:FuzzyTmStatistics, fuzzyWordCount1: ns1:FuzzyTmStatistics, fuzzyWordCount10: ns1:FuzzyTmStatistics, fuzzyWordCount2: ns1:FuzzyTmStatistics, fuzzyWordCount3: ns1:FuzzyTmStatistics, fuzzyWordCount4: ns1:FuzzyTmStatistics, fuzzyWordCount5: ns1:FuzzyTmStatistics, fuzzyWordCount6: ns1:FuzzyTmStatistics, fuzzyWordCount7: ns1:FuzzyTmStatistics, fuzzyWordCount8: ns1:FuzzyTmStatistics, fuzzyWordCount9: ns1:FuzzyTmStatistics, inContextMatchWordCount: xsd:int, noMatchWordCount: xsd:int, oneHundredMatchWordCount: xsd:int, repetitionWordCount: xsd:int, totalWordCount: xsd:int)
+     ns1:UploadActionResult(messages: xsd:string[], processingFinished: xsd:boolean)
+     ns1:UserData(email: xsd:string, name: xsd:string)
+     ns1:UserInfo(accountLocked: xsd:boolean, accountNonExpired: xsd:boolean, address: xsd:string, autoClaimMultipleTasks: xsd:boolean, claimMultipleJobTasks: xsd:boolean, credentialsNonExpired: xsd:boolean, dateLastLogin: xsd:dateTime, department: xsd:string, emailAddress: xsd:string, emailNotification: xsd:boolean, enabled: xsd:boolean, fax: xsd:string, firstName: xsd:string, lastName: xsd:string, password: xsd:string, phone1: xsd:string, phone2: xsd:string, timeZone: xsd:string, userName: xsd:string, userType: xsd:string)
+     ns1:UserProfile(availableTasks: xsd:int, organizationName: xsd:string, systemRoles: ns1:Role[], tasks: ns1:Task[], ticket: xsd:string, userInfo: ns1:UserInfo, vendorName: xsd:string)
+     ns1:WorkflowDefinition(description: xsd:string, name: xsd:string, ticket: xsd:string, type: ns1:EntityTypeEnum)
+     ns1:WorkflowRequest(batchWorkflowInfos: ns1:BatchWorkflowInfo[], languageWorkflowInfos: ns1:LanguageWorkflowInfo[], phaseName: xsd:string, submissionTicket: xsd:string, targetWorkflowInfos: ns1:TargetWorkflowInfo[])
+     ns1:WorkflowRequestTicket(message: xsd:string, processTicket: xsd:string, submissionTicket: xsd:string)
+     xsd:ENTITIES
+     xsd:ENTITY
+     xsd:ID
+     xsd:IDREF
+     xsd:IDREFS
+     xsd:NCName
+     xsd:NMTOKEN
+     xsd:NMTOKENS
+     xsd:NOTATION
+     xsd:Name
+     xsd:QName
+     xsd:anySimpleType
+     xsd:anyURI
+     xsd:base64Binary
+     xsd:boolean
+     xsd:byte
+     xsd:date
+     xsd:dateTime
+     xsd:decimal
+     xsd:double
+     xsd:duration
+     xsd:float
+     xsd:gDay
+     xsd:gMonth
+     xsd:gMonthDay
+     xsd:gYear
+     xsd:gYearMonth
+     xsd:hexBinary
+     xsd:int
+     xsd:integer
+     xsd:language
+     xsd:long
+     xsd:negativeInteger
+     xsd:nonNegativeInteger
+     xsd:nonPositiveInteger
+     xsd:normalizedString
+     xsd:positiveInteger
+     xsd:short
+     xsd:string
+     xsd:time
+     xsd:token
+     xsd:unsignedByte
+     xsd:unsignedInt
+     xsd:unsignedLong
+     xsd:unsignedShort
+     ns2:base64Binary(xsd:base64Binary, contentType: ns2:contentType)
+     ns2:hexBinary(xsd:hexBinary, contentType: ns2:contentType)
+
+Bindings:
+     HttpPostBinding: {http://impl.services2.service.ws.projectdirector.gs4tr.org}DocumentService2HttpBinding
+     Soap11Binding: {http://impl.services2.service.ws.projectdirector.gs4tr.org}DocumentService2Soap11Binding
+     Soap12Binding: {http://impl.services2.service.ws.projectdirector.gs4tr.org}DocumentService2Soap12Binding
+
+Service: DocumentService2_4180
+     Port: DocumentService2HttpSoap11Endpoint (Soap11Binding: {http://impl.services2.service.ws.projectdirector.gs4tr.org}DocumentService2Soap11Binding)
+         Operations:
+            cancelDocument(documentTicket: ns1:DocumentTicket, userId: xsd:string) -> return: xsd:string
+            findByTicket(ticket: xsd:string, userId: xsd:string) -> return: ns1:Document
+            search(command: ns1:DocumentSearchRequest, info: ns1:PagedListInfo, userId: xsd:string) -> return: ns1:DocumentPagedList
+            submitDocumentWithBinaryResource(documentInfo: ns1:DocumentInfo, resourceInfo: ns1:ResourceInfo, data: ns2:base64Binary, userId: xsd:string) -> return: ns1:DocumentTicket
+            submitDocumentWithTextResource(documentInfo: ns1:DocumentInfo, resourceInfo: ns1:ResourceInfo, data: xsd:string, userId: xsd:string) -> return: ns1:DocumentTicket
+
+     Port: DocumentService2HttpSoap12Endpoint (Soap12Binding: {http://impl.services2.service.ws.projectdirector.gs4tr.org}DocumentService2Soap12Binding)
+         Operations:
+            cancelDocument(documentTicket: ns1:DocumentTicket, userId: xsd:string) -> return: xsd:string
+            findByTicket(ticket: xsd:string, userId: xsd:string) -> return: ns1:Document
+            search(command: ns1:DocumentSearchRequest, info: ns1:PagedListInfo, userId: xsd:string) -> return: ns1:DocumentPagedList
+            submitDocumentWithBinaryResource(documentInfo: ns1:DocumentInfo, resourceInfo: ns1:ResourceInfo, data: ns2:base64Binary, userId: xsd:string) -> return: ns1:DocumentTicket
+            submitDocumentWithTextResource(documentInfo: ns1:DocumentInfo, resourceInfo: ns1:ResourceInfo, data: xsd:string, userId: xsd:string) -> return: ns1:DocumentTicket
+
+     Port: DocumentService2HttpEndpoint (HttpPostBinding: {http://impl.services2.service.ws.projectdirector.gs4tr.org}DocumentService2HttpBinding)
+         Operations:
+            cancelDocument(documentTicket: ns1:DocumentTicket, userId: xsd:string) -> xsd:string
+            findByTicket(ticket: xsd:string, userId: xsd:string) -> documentGroup: ns1:DocumentGroup, documentInfo: ns1:DocumentInfo, id: xsd:string, sourceLanguage: ns1:Language, sourceWordCount: xsd:int, ticket: xsd:string
+            search(command: ns1:DocumentSearchRequest, info: ns1:PagedListInfo, userId: xsd:string) -> elements: ns1:Document[], pagedListInfo: ns1:PagedListInfo, tasks: ns1:Task[], totalCount: xsd:long
+            submitDocumentWithBinaryResource(documentInfo: ns1:DocumentInfo, resourceInfo: ns1:ResourceInfo, data: ns2:base64Binary, userId: xsd:string) -> submissionTicket: xsd:string, ticketId: xsd:string
+            submitDocumentWithTextResource(documentInfo: ns1:DocumentInfo, resourceInfo: ns1:ResourceInfo, data: xsd:string, userId: xsd:string) -> submissionTicket: xsd:string, ticketId: xsd:string
