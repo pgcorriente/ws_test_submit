@@ -75,16 +75,17 @@ def create_document_info(doc_name, doc_instructions):
     # instructions: xsd:string, metadata: ns1:Metadata[], name: xsd:string, projectTicket: xsd:string,
     # sourceLocale: xsd:string, submissionTicket: xsd:string, targetInfos: ns1:TargetInfo[], wordCount: xsd:int)
     tgt_infos = create_target_info()
+    datereq = document_factory.Date(date=date_requested)
     if submission_ticket is not None:
         document_info = document_factory.DocumentInfo(projectTicket=project_ticket, submissionTicket=submission_ticket,
                                                       sourceLocale=src_lang, name=doc_name,
                                                       instructions=doc_instructions, clientIdentifier=client_identifier,
-                                                      targetInfos=tgt_infos, dateRequested=date_requested)
+                                                      targetInfos=tgt_infos, dateRequested=datereq)
     else:
         document_info = document_factory.DocumentInfo(projectTicket=project_ticket, sourceLocale=src_lang,
                                                       name=doc_name, instructions=doc_instructions,
                                                       clientIdentifier=client_identifier, targetInfos=tgt_infos,
-                                                      dateRequested=date_requested)
+                                                      dateRequested=datereq)
 
     return document_info
 
