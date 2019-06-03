@@ -41,6 +41,12 @@ def submit_document_with_binary_resource(file_name, token):
         print "----------- Begin resource info -------------"
         print res_info
         print "----------- End resource info -------------"
+        submit_message = document_client.create_message(document_service, 'submitDocumentWithBinaryResource',
+                                       documentInfo=doc_info, resourceInfo=res_info,
+                                       data=file_contents_64, userId=token)
+        print "----------- Begin submit message -------------"
+        print etree.tostring(submit_message, pretty_print=True)
+        print "----------- End submit message -------------"
         submit_document_response = document_service.submitDocumentWithBinaryResource(documentInfo=doc_info,
                                                                                      resourceInfo=res_info,
                                                                                      data=file_contents_64,
@@ -57,12 +63,30 @@ def create_submission_info(sub_name):
     # priority: ns1:Priority, projectTicket: xsd:string, revenue: xsd:double, submissionBackground: xsd:string,
     # submissionCustomFields: ns1:SubmissionCustomFields[], submitters: xsd:string[],
     # workflowDefinitionTicket: xsd:string)
-    prio = document_factory.Priority(value=1)
-    date = document_factory.Date(date=int(str(time.time()+86400000).split('.')[0]))
-    submission_info = document_factory.SubmissionInfo(additionalCosts='', autoStartChilds=False,
-                                                      clientIdentifier=client_identifier, dateRequested=date,
-                                                      internalNotes='', metadata=[], name=sub_name,
-                                                      projectTicket=project_ticket, critical=False, priority=prio)
+    #
+    # ns1:Date(critical: xsd:boolean, date: xsd:long)
+    #
+    # ns1:Priority(name: xsd:string, value: xsd:int)
+    prio = document_factory.Priority(name=zeep.xsd.SkipValue, value=1)
+    date_req = document_factory.Date(critical=zeep.xsd.SkipValue, date=date_requested)
+    submission_info = document_factory.SubmissionInfo(additionalCosts=zeep.xsd.SkipValue,
+                                                      autoStartChilds=zeep.xsd.SkipValue,
+                                                      claimScope=zeep.xsd.SkipValue,
+                                                      clientIdentifier=client_identifier,
+                                                      dateRequested=date_req,
+                                                      internalNotes=zeep.xsd.SkipValue,
+                                                      metadata=zeep.xsd.SkipValue,
+                                                      name=sub_name,
+                                                      officeName=zeep.xsd.SkipValue,
+                                                      paClientTicket=zeep.xsd.SkipValue,
+                                                      paJobNumber=zeep.xsd.SkipValue,
+                                                      priority=prio,
+                                                      projectTicket=project_ticket,
+                                                      revenue=zeep.xsd.SkipValue,
+                                                      submissionBackground=zeep.xsd.SkipValue,
+                                                      submissionCustomFields=zeep.xsd.SkipValue,
+                                                      submitters=zeep.xsd.SkipValue,
+                                                      workflowDefinitionTicket=zeep.xsd.SkipValue)
     print "--------------- Begin submission info ---------------"
     print submission_info
     print "--------------- Begin submission info ---------------"
@@ -75,18 +99,31 @@ def create_document_info(doc_name, doc_instructions):
     # instructions: xsd:string, metadata: ns1:Metadata[], name: xsd:string, projectTicket: xsd:string,
     # sourceLocale: xsd:string, submissionTicket: xsd:string, targetInfos: ns1:TargetInfo[], wordCount: xsd:int)
     tgt_infos = create_target_info()
-    datereq = document_factory.Date(date=date_requested)
+    date_req = document_factory.Date(critical=zeep.xsd.SkipValue, date=date_requested)
     if submission_ticket is not None:
-        document_info = document_factory.DocumentInfo(projectTicket=project_ticket, submissionTicket=submission_ticket,
-                                                      sourceLocale=src_lang, name=doc_name,
-                                                      instructions=doc_instructions, clientIdentifier=client_identifier,
-                                                      targetInfos=tgt_infos, dateRequested=datereq)
+        document_info = document_factory.DocumentInfo(childDocumentInfos=zeep.xsd.SkipValue,
+                                                      clientIdentifier=client_identifier,
+                                                      dateRequested=date_req,
+                                                      instructions=zeep.xsd.SkipValue,
+                                                      metadata=zeep.xsd.SkipValue,
+                                                      name=doc_name,
+                                                      projectTicket=project_ticket,
+                                                      sourceLocale=src_lang,
+                                                      submissionTicket=submission_ticket,
+                                                      targetInfos=tgt_infos,
+                                                      wordCount=zeep.xsd.SkipValue)
     else:
-        document_info = document_factory.DocumentInfo(projectTicket=project_ticket, sourceLocale=src_lang,
-                                                      name=doc_name, instructions=doc_instructions,
-                                                      clientIdentifier=client_identifier, targetInfos=tgt_infos,
-                                                      dateRequested=datereq)
-
+        document_info = document_factory.DocumentInfo(childDocumentInfos=zeep.xsd.SkipValue,
+                                                      clientIdentifier=client_identifier,
+                                                      dateRequested=date_req,
+                                                      instructions=zeep.xsd.SkipValue,
+                                                      metadata=zeep.xsd.SkipValue,
+                                                      name=doc_name,
+                                                      projectTicket=project_ticket,
+                                                      sourceLocale=src_lang,
+                                                      submissionTicket=zeep.xsd.SkipValue,
+                                                      targetInfos=tgt_infos,
+                                                      wordCount=zeep.xsd.SkipValue)
     return document_info
 
 
@@ -95,8 +132,17 @@ def create_resource_info(doc_name, doc_size):
     # ns1:ResourceInfo(classifier: xsd:string, clientIdentifier: xsd:string, description: xsd:string,
     # encoding: xsd:string, md5Checksum: xsd:string, mimeType: xsd:string, name: xsd:string, path: xsd:string,
     # resourceInfoId: xsd:long, size: xsd:long, type: ns1:ResourceType)
-    resource_info = document_factory.ResourceInfo(classifier=file_classifier, clientIdentifier=client_identifier,
-                                                  name=doc_name, size=doc_size, encoding='UTF-8')
+    resource_info = document_factory.ResourceInfo(classifier=file_classifier,
+                                                  clientIdentifier=client_identifier,
+                                                  description=zeep.xsd.SkipValue,
+                                                  encoding='UTF-8',
+                                                  md5Checksum=zeep.xsd.SkipValue,
+                                                  mimeType=zeep.xsd.SkipValue,
+                                                  name=doc_name,
+                                                  path=zeep.xsd.SkipValue,
+                                                  resourceInfoId=zeep.xsd.SkipValue,
+                                                  size=doc_size,
+                                                  type=zeep.xsd.SkipValue)
     return resource_info
 
 
@@ -105,10 +151,18 @@ def create_target_info():
     # ns1:TargetInfo(dateRequested: ns1:Date, encoding: xsd:string, instructions: xsd:string, metadata: ns1:Metadata[],
     # priority: ns1:Priority, requestedDueDate: xsd:long, targetLocale: xsd:string,
     # workflowDefinitionTicket: xsd:string)
-    prio = document_factory.Priority(name='Low', value=0)
+    prio = document_factory.Priority(name=zeep.xsd.SkipValue, value=1)
+    date_req = document_factory.Date(critical=zeep.xsd.SkipValue, date=date_requested)
     target_info_array = []
     for lang in tgt_langs:
-        target_info = document_factory.TargetInfo(targetLocale=lang, requestedDueDate=0, priority=prio, encoding='UTF-8')
+        target_info = document_factory.TargetInfo(dateRequested=date_req,
+                                                  encoding='UTF-8',
+                                                  instructions=zeep.xsd.SkipValue,
+                                                  metadata=zeep.xsd.SkipValue,
+                                                  priority=prio,
+                                                  requestedDueDate=zeep.xsd.SkipValue,
+                                                  targetLocale=lang,
+                                                  workflowDefinitionTicket=zeep.xsd.SkipValue)
         target_info_array.append(target_info)
     return target_info_array
 
